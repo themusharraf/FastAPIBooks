@@ -5,6 +5,11 @@ from data import book_db, user_db
 app = FastAPI()
 
 
+@app.get("/")
+async def home():
+    return {"message": "Hello world"}
+
+
 @app.get("/books")
 async def books():
     return book_db
