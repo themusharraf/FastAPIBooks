@@ -30,5 +30,3 @@ async def get_user(user_id: int):
     return [user for user in user_db if user.get("id") == user_id]
 
 
-if __name__ == "__main__":
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True, log_level="debug")
