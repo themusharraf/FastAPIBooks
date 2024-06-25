@@ -1,28 +1,29 @@
-from fastapi import FastAPI
+# main.py
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import Session
+from database import SessionLocal
+import schemas
+import crud
 
 app = FastAPI()
 
 
-@app.get("/")
-async def home():
-    return {"message": "Hello world"}
+# Dependency to get the database session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
-@app.get("/books")
-async def books():
-    ...
+@app.post("/users/", response_model=schemas.UserResponse)
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    db_user = crud.create_user(db=db, user=user)
+    return db_user
 
 
-@app.get("/books/{book_id}")
-async def get_book(book_id: int):
-    ...
-
-
-@app.get("/users")
-async def users():
-    ...
-
-
-@app.get("/users/{user_id}")
-async def get_user(user_id: int):
-    ...
+@app.post("/books/", response_model=schemas.BookResponse)
+def create_book(user_id: int, book: schemas.BookCreate, db: Session = Depends(get_db)):
+    db_book = crud.create_book(db=db, book=book, user_id=user_id)
+    return db_book
