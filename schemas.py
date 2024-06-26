@@ -2,14 +2,17 @@ from pydantic import BaseModel, EmailStr
 from datetime import datetime
 from typing import List, Optional
 
+
 # User schema
 class UserBase(BaseModel):
     username: str
     email: EmailStr
     is_active: bool = True
 
+
 class UserCreate(UserBase):
     password: str
+
 
 class UserResponse(UserBase):
     id: int
@@ -18,6 +21,7 @@ class UserResponse(UserBase):
     class Config:
         from_attributes = True
 
+
 # Book schema
 class BookBase(BaseModel):
     title: str
@@ -25,8 +29,10 @@ class BookBase(BaseModel):
     isbn: str
     pages: Optional[int] = None
 
+
 class BookCreate(BookBase):
     pass
+
 
 class BookResponse(BookBase):
     id: int
