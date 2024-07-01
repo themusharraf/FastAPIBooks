@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 from models import User, Book
 import schemas
+
+
 # from fastapi import HTTPException, status
 # from hashing import Hash
 # from passlib.context import CryptContext
@@ -42,3 +44,19 @@ def create_book(db: Session, book: schemas.BookCreate, user_id: int):
     db.commit()
     db.refresh(db_book)
     return db_book
+
+
+def get_all_users(db: Session):
+    return db.query(User).all()
+
+
+def get_user(db: Session, user_id: int):
+    return db.query(User).filter(User.id == user_id).first()
+
+
+def get_all_books(db: Session):
+    return db.query(Book).all()
+
+
+def get_book(db: Session, book_id: int):
+    return db.query(Book).filter(Book.id == book_id).first()
