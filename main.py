@@ -1,33 +1,20 @@
-from typing import List
-
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Request
 from sqlalchemy.orm import Session
 from database import SessionLocal
+from datetime import datetime
+from typing import List
 import logging
 import schemas
 import crud
 
 app = FastAPI()
 
-# Create a logger object
-logger = logging.getLogger("my_logger")
-logger.setLevel(logging.DEBUG)
-
-# Create handlers
-c_handler = logging.StreamHandler()
-f_handler = logging.FileHandler("file.log")
-c_handler.setLevel(logging.DEBUG)
-f_handler.setLevel(logging.DEBUG)
-
-# Create formatters and add them to handlers
-c_format = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-f_format = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-c_handler.setFormatter(c_format)
-f_handler.setFormatter(f_format)
-
-# Add handlers to the logger
-logger.addHandler(c_handler)
-logger.addHandler(f_handler)
+# Log konfiguratsiyasi
+logging.basicConfig(
+    filename="access.log",
+    format="%(asctime)s - %(message)s",  # noqa
+    level=logging.INFO
+)
 
 
 # Dependency to get the database session
@@ -37,6 +24,21 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+@app.get("/")
+async def get_client_ip(request: Request):
+    # Foydalanuvchi IP manzilini olish
+    forwarded_for = request.headers.get('X-Forwarded-For')
+    if forwarded_for:
+        client_ip = forwarded_for.split(',')[0]
+    else:
+        client_ip = request.client.host
+
+    # Logga yozish
+    logging.info(f"Client IP: {client_ip}, Accessed at: {datetime.now()}")
+
+    return {"client_ip": client_ip}
 
 
 @app.get("/users/", response_model=List[schemas.UserResponse])
@@ -55,7 +57,6 @@ async def get_one_user(user_id: int, db: Session = Depends(get_db)):
 
 @app.post("/users/", response_model=schemas.UserResponse)
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    logger.info("Root endpoint was called")
     db_user = crud.create_user(db=db, user=user)
     return db_user
 
