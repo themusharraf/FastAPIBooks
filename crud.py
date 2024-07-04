@@ -1,28 +1,14 @@
 from sqlalchemy.orm import Session
 from models import User, Book
+from werkzeug.security import generate_password_hash
 import schemas
 
 
-# from fastapi import HTTPException, status
-# from hashing import Hash
-# from passlib.context import CryptContext
-#
-# pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-#
-#
-# class Hash:
-#     @staticmethod
-#     def bcrypt(password: str):
-#         return pwd_context.hash(password)
-
-
-# hashed_password = Hash.bcrypt(user.password)
-# Create a new user
 def create_user(db: Session, user: schemas.UserCreate):
     db_user = User(
         username=user.username,
         email=user.email,
-        password=user.password,
+        password=generate_password_hash(user.password),
         is_active=user.is_active
     )
     db.add(db_user)

@@ -1,2 +1,22 @@
 2024-07-03 19:29:25,833 - Client IP: 127.0.0.1, Accessed at: 2024-07-03 19:29:25.833331
 2024-07-03 19:29:26,812 - Client IP: 127.0.0.1, Accessed at: 2024-07-03 19:29:26.812670
+2024-07-04 15:01:36,947 - select pg_catalog.version()
+2024-07-04 15:01:36,947 - [raw sql] {}
+2024-07-04 15:01:36,949 - select current_schema()
+2024-07-04 15:01:36,949 - [raw sql] {}
+2024-07-04 15:01:36,949 - show standard_conforming_strings
+2024-07-04 15:01:36,949 - [raw sql] {}
+2024-07-04 15:01:36,950 - BEGIN (implicit)
+2024-07-04 15:01:36,950 - INSERT INTO users (username, email, is_active, password) VALUES (%(username)s, %(email)s, %(is_active)s, %(password)s) RETURNING users.id
+2024-07-04 15:01:36,951 - [generated in 0.00011s] {'username': 'allncx', 'email': 'allnece@example.com', 'is_active': True, 'password': 'scrypt:32768:8:1$odrCbz48tp62xGkj$b689f5fe919ca1ac219afaa9af4681f4c6c6e7d998fb97320007d7ca060a053a04cfc81e3910f07c382fd7c2419a383ff63fb700286b3a5451a3c552dd77ab6a'}
+2024-07-04 15:01:36,953 - COMMIT
+2024-07-04 15:01:36,954 - BEGIN (implicit)
+2024-07-04 15:01:36,955 - SELECT users.id, users.username, users.email, users.is_active, users.password 
+FROM users 
+WHERE users.id = %(pk_1)s
+2024-07-04 15:01:36,955 - [generated in 0.00012s] {'pk_1': 6}
+2024-07-04 15:01:36,957 - SELECT books.id AS books_id, books.title AS books_title, books.language AS books_language, books.year AS books_year, books.isbn AS books_isbn, books.pages AS books_pages, books.user_id AS books_user_id 
+FROM books 
+WHERE %(param_1)s = books.user_id
+2024-07-04 15:01:36,957 - [generated in 0.00010s] {'param_1': 6}
+2024-07-04 15:01:36,958 - ROLLBACK
