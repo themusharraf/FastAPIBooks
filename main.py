@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, status, Request
 from sqlalchemy.orm import Session
 from database import SessionLocal
 from datetime import datetime
+from utils.main import send_email
 from typing import List
 import logging
 import schemas
@@ -9,7 +10,7 @@ import crud
 
 app = FastAPI()
 
-# Log konfiguratsiyasi
+# Log konfiguratsiyasi # noqa
 logging.basicConfig(
     filename="access.log",
     format="%(asctime)s - %(message)s",  # noqa
@@ -58,6 +59,8 @@ async def get_one_user(user_id: int, db: Session = Depends(get_db)):
 @app.post("/users/", response_model=schemas.UserResponse)
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.create_user(db=db, user=user)
+    email = user.email
+    send_email(email,'utils/msg.html')
     return db_user
 
 
