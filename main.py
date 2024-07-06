@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Depends, HTTPException, status, Request
 from sqlalchemy.orm import Session
+from utils.main import send_email
 from database import SessionLocal
 from datetime import datetime
-from utils.main import send_email
 from typing import List
 import logging
 import schemas
@@ -29,14 +29,14 @@ def get_db():
 
 @app.get("/")
 async def get_client_ip(request: Request):
-    # Foydalanuvchi IP manzilini olish
+    # Foydalanuvchi IP manzilini olish  # noqa
     forwarded_for = request.headers.get('X-Forwarded-For')
     if forwarded_for:
         client_ip = forwarded_for.split(',')[0]
     else:
         client_ip = request.client.host
 
-    # Logga yozish
+    # Logga write
     logging.info(f"Client IP: {client_ip}, Accessed at: {datetime.now()}")
 
     return {"client_ip": client_ip}
@@ -60,7 +60,7 @@ async def get_one_user(user_id: int, db: Session = Depends(get_db)):
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.create_user(db=db, user=user)
     email = user.email
-    send_email(email,'utils/msg.html')
+    send_email(email, 'utils/msg.html')
     return db_user
 
 
@@ -82,3 +82,13 @@ async def get_one_book(book_id: int, db: Session = Depends(get_db)):
     if book is None:
         return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found.")
     return book
+
+
+@app.put("/users/{user_id}", response_model=schemas.UserResponse)
+def update_user(user_id: int, user_update: schemas.UserUpdate, db: Session = Depends(get_db)):
+    return crud.update_user(db, user_id, user_update)
+
+
+@app.put("/books/{book_id}", response_model=schemas.BookResponse)
+def update_book(book_id: int, book_update: schemas.BookUpdate, db: Session = Depends(get_db)):
+    return crud.update_book(db, book_id, book_update)

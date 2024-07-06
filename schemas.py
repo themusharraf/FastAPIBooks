@@ -41,3 +41,17 @@ class BookResponse(BookBase):
 
     class Config:
         from_attributes = True
+
+
+class UserUpdate(BaseModel):
+    username: str
+    email: str
+    is_active: bool
+    password: str = None
+
+
+class BookUpdate(BaseModel):
+    title: str
+    language: str
+    isbn: str
+    pages: int
