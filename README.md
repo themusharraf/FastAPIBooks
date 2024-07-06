@@ -1,4 +1,4 @@
-# BookAPI Deployment Test Server 
+# BookAPI Project architecture
 
 ## BooksAPI endpoints
 
