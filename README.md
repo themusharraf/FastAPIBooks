@@ -18,6 +18,14 @@ def test_get_user():
     assert type(requests.json()['is_active']) == bool
 
 ```
+## Example Endpoint for test Books:
+
+```python
+def test_get_books():
+    requests = client.get("/books/")
+    assert requests.status_code == 200
+    assert type(requests.json()) == list
+```
    
 ## Example Request for Updating User:
 ### http
