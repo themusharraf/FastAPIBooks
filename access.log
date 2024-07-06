@@ -45,3 +45,4 @@ FROM books
 WHERE %(param_1)s = books.user_id
 2024-07-05 19:00:20,783 - [generated in 0.00010s] {'param_1': 8}
 2024-07-05 19:00:20,784 - ROLLBACK
+2024-07-07 02:12:14,530 - Client IP: 127.0.0.1, Accessed at: 2024-07-07 02:12:14.529999

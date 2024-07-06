@@ -10,6 +10,13 @@ class UserBase(BaseModel):
     is_active: bool = True
 
 
+class User(UserBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+
+
 class UserCreate(UserBase):
     password: str
 
@@ -55,3 +62,11 @@ class BookUpdate(BaseModel):
     language: str
     isbn: str
     pages: int
+
+
+class Book(BookBase):
+    id: int
+    user_id: int
+
+    class Config:
+        from_attributes = True

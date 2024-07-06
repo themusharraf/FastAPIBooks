@@ -71,3 +71,22 @@ def update_book(db: Session, book_id: int, book_update: schemas.BookUpdate):
         db.commit()
         db.refresh(db_book)
     return db_book
+
+
+def delete_book(db: Session, book_id: int):
+    db_book = db.query(Book).filter(Book.id == book_id).first()
+    if db_book:
+        db.delete(db_book)
+        db.commit()
+    return db_book
+
+
+def delete_user(db: Session, user_id: int):
+    db_user = db.query(User).filter(User.id == user_id).first()
+    if db_user:
+        # Delete all books associated with the user
+        db.query(Book).filter(Book.user_id == user_id).delete()
+        # Delete the user
+        db.delete(db_user)
+        db.commit()
+    return db_user

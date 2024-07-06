@@ -8,7 +8,7 @@ import logging
 import schemas
 import crud
 
-app = FastAPI()
+app = FastAPI(title="BooksApi")
 
 # Log konfiguratsiyasi # noqa
 logging.basicConfig(
@@ -89,6 +89,20 @@ def update_user(user_id: int, user_update: schemas.UserUpdate, db: Session = Dep
     return crud.update_user(db, user_id, user_update)
 
 
+@app.delete("/users/{user_id}", response_model=schemas.User)
+def delete_user_endpoint(user_id: int, db: Session = Depends(get_db)):
+    if user_id is None:
+        return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
+    return crud.delete_user(db, user_id)
+
+
 @app.put("/books/{book_id}", response_model=schemas.BookResponse)
 def update_book(book_id: int, book_update: schemas.BookUpdate, db: Session = Depends(get_db)):
     return crud.update_book(db, book_id, book_update)
+
+
+@app.delete("/books/{book_id}", response_model=schemas.Book)
+def delete_book_endpoint(book_id: int, db: Session = Depends(get_db)):
+    if book_id is None:
+        return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found.")
+    return crud.delete_book(db, book_id)
