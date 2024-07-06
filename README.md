@@ -1,5 +1,5 @@
 # BookAPI Project architecture
-## Author: Musharraf
+## Author: Musharraf 👨‍💻
 
 ## BooksAPI endpoints
 
