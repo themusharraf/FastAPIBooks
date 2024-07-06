@@ -8,7 +8,16 @@
 
 ![image](https://github.com/themusharraf/FastAPIBooks/assets/122869450/aae7e4d1-2eb5-4efa-a9f8-74937c6a319d)
 
+## Example Endpoint for test User:
 
+```
+def test_get_user():
+    requests = client.get("/users/1")
+    assert requests.status_code == 200
+    assert type(requests.json()['email']) == str
+    assert type(requests.json()['is_active']) == bool
+
+```
    
 ## Example Request for Updating User:
 ### http
