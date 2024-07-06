@@ -10,7 +10,7 @@
 
 ## Example Endpoint for test User:
 
-```
+```python
 def test_get_user():
     requests = client.get("/users/1")
     assert requests.status_code == 200
@@ -22,7 +22,7 @@ def test_get_user():
 ## Example Request for Updating User:
 ### http
 
-```
+```http
 PUT /users/1
 Content-Type: application/json
 
@@ -36,7 +36,7 @@ Content-Type: application/json
 ## Example Request for Updating Book:
 ### http
 
-```
+```http
 PUT /books/1
 Content-Type: application/json
 
